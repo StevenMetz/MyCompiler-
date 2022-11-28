@@ -1,3 +1,1 @@
-def f(x,y,z) 
-g(x,t,y,1)
-end
+def f(x,y) add (x, y) end
