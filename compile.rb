@@ -56,15 +56,37 @@ class Parser
   def parse_expr
     if peak(:integer)
       parse_integer
-    else
+    elsif peak(:identifier) && peak(:oparen, 1)
       parse_call
+    else
+      parse_var_ref
     end
   end
 
+  def parse_var_ref
+    VarRefNode.new(consume(:identifier).value)
+  end
+
   def parse_call
-    consume(:identifier)
+    name = consume(:identifier).value
+    arg_exprs = parse_arg_exprs
+    CallNode.new(name, arg_exprs)
+  end
+
+  def parse_arg_exprs
     consume(:oparen)
+
+    arg_exprs = []
+
+    if !peak(:cparen)
+      arg_exprs << parse_expr
+      while peak(:coma)
+        consume(:coma)
+        arg_exprs << parse_expr
+      end
+    end
     consume(:cparen)
+    arg_exprs
   end
 
   def parse_integer
@@ -96,13 +118,15 @@ class Parser
     end
   end
 
-  def peak(expected_type)
-    @tokens.fetch(0).type == expected_type
+  def peak(expected_type, offset = 0)
+    @tokens.fetch(offset).type == expected_type
   end
 end
 
 DefNode = Struct.new(:name, :arg_names, :body)
 IntegerNode = Struct.new(:value)
+CallNode = Struct.new(:name, :arg_exprs)
+VarRefNode = Struct.new(:value)
 Token = Struct.new(:type, :value)
 tokens = Tokenizer.new(File.read("test.src")).tokenize
 puts tokens.map(&:inspect).join("\n")
