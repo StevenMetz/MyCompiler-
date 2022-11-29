@@ -156,7 +156,7 @@ Token = Struct.new(:type, :value)
 tokens = Tokenizer.new(File.read("test.src")).tokenize
 tree = Parser.new(tokens).parse
 generated = Generator.new.generate(tree)
-TEST = "console.log(f(1 ,2));"
-RUNTIME = "funtion add(x, y) {return x + y};"
+TEST = "console.log(f(1 ,78));"
+RUNTIME = "function add(x, y) {return x + y};"
 puts [RUNTIME, generated, TEST].join("\n")
 # puts generated
