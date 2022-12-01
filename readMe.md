@@ -1,5 +1,5 @@
 README
-This compiler was built from this tutorial: https://www.destroyallsoftware.com/screencasts/catalog/a-compiler-from-scratch
+This compiler was built from referencing this tutorial: https://www.destroyallsoftware.com/screencasts/catalog/a-compiler-from-scratch
  
 Compiler Version: 1.0
  
